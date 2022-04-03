@@ -1,0 +1,83 @@
+Virtual assistant
+
+Step 1. Download these Librares by pip install:
+
+pip install speechrecognition
+
+pip install pyttsx3
+
+(WARNING) if not work you must get too pyaudio Library tutorial how to get without problems: https://stackoverflow.com/questions/52283840/i-cant-install-pyaudio-on-windows-how-to-solve-error-microsoft-visual-c-14
+
+
+
+Step 2. Paste Code (Python):
+#--------------------------------
+import speech_recognition as sr
+import pyttsx3 as tts
+import os,sys,time
+
+#Objekty
+r=sr.Recognizer()
+engine=tts.init()
+engine.setProperty('voice',engine.getProperty('voices')[0].id)
+
+#wczytać googla
+google='C:\Program Files\Google\Chrome\Application'
+
+def speak(text):
+    engine.say(text)
+    engine.runAndWait()
+
+def getText():
+    try:
+        with sr.Microphone() as source:
+            print('Nasłuchuje...', end='\r')
+            audio = r.listen(source)
+            text = r.recognize_google(audio, language = 'pl-PL')
+            if text == None:
+                return None
+            else:
+                return text
+    except:
+        return None
+
+def czy_zawiera(string,slowa):
+    return [element for element in slowa if element in string.lower()]
+
+#-for element in slowa:
+#----if element in string.lower():
+#--------lista.append(element)
+#-return lista
+
+#Stałe listy gestów
+WYKRYJ=['bot','robot','robocie','asystencie']
+DOWIDZENIA=['dowidzenia','do widzenia','żegnaj','papa']
+SZUKAJ=['wyszukaj','szukaj','znajdź','pokaż']
+
+print("Aby wyjść powiedz 'Dowidzenia")
+while True:
+    time.sleep(0.5)
+    cur=getText()
+    print(cur)
+    print(""*50,end="\r")
+    if cur!=None:
+        if len(czy_zawiera(cur,WYKRYJ)):
+            if len(czy_zawiera(cur,DOWIDZENIA)):
+                speak("Żegnaj.")
+                break
+            elif len(czy_zawiera(cur,SZUKAJ)):
+                linczek=cur.lower().split(''+czy_zawiera(cur,SZUKAJ)[0]+'')[1]
+                speak("Oto co udało mi się znaleść.")
+                url="https://www.google.com/search?q=%22+linczek.replace(" ","+").replace("?","%3F")
+                os.system(google+" "+url)
+print("text")
+                #www.google.pl/search?q=jak+zrobić+naleśniki
+                #Robocie,jak zrobić naleśniki
+                #C:\Program Files\Google\Chrome\Application
+#-----------------------------------------------------------
+
+
+
+
+
+Step 4. Enjoy!
